@@ -7,7 +7,7 @@ with pl as (
     ,decode(debitcredit,'DEBIT',currency)                               as debit_currency
     ,pbt.createdat::datetime
     ,debitcredit
---following is for manual adjustments
+--the following lines are for manual adjustments from operations. Hashtag is used as a delimter
     ,coalesce(pbt.paymeromerchantid,split_part(pbt.remarks, '#', 2))    as merchantid
     ,case when remarks like '%#%' then 'adjustment' else null END       as PL_type
     ,case when pl_type = 'adjustment' then (
@@ -19,14 +19,13 @@ with pl as (
     ,pbt.accountid
 -- GBP conversion rates for reporting   
     ,amount::float*
-        (SELECT rawinverseamount
+        (SELECT rates
         FROM   reports.fx_rates_mv fx
         WHERE  targetcurrency = pbt.currency
         AND    basecurrency = 'GBP'
         AND    date_trunc('day',pbt.createdat) = fx.dateday AND rawinverseamount IS NOT NULL        as Amount_GBP
     ,CASE WHEN upper(transactiontype) = 'FEE'                   THEN Amount_GBP::float ELSE 0 END   as fee_amount_gbp
     ,CASE WHEN upper(transactiontype) = 'NETWORK_FEE'           THEN Amount_GBP::float ELSE 0 END   as network_fee_amount_gbp
-    ,CASE WHEN upper(transactiontype) = 'NETWORK_FEE_COVERAGE'  THEN Amount_GBP::float ELSE 0 END   as network_fee_coverage_amount_gbp
     ,CASE WHEN upper(transactiontype) = 'NETWORK_INTERNAL'      THEN Amount_GBP::float ELSE 0 END   as network_internal_amount_gbp
     ,CASE WHEN upper(transactiontype) = 'FEE_REFUND'            THEN Amount_GBP::float ELSE 0 END   as fee_refund_amount_gbp
     ,CASE WHEN upper(transactiontype) = 'NETWORK_FEE_REFUND'    THEN Amount_GBP::float ELSE 0 END   as network_fee_refund_amount_gbp
@@ -44,10 +43,10 @@ with pl as (
     ,CASE WHEN upper(debitcredit) = 'CREDIT'    then 1 Else 0 END                                   as credit_entries
     ,CASE WHEN upper(debitcredit) = 'DEBIT'     then 1 Else 0 END                                   as debit_entries
     FROM paymero.paymerobalancetransactions pbt
-    WHERE left(merchantid,2) <> 'SB'
+    WHERE left(merchantid,2) <> 'xx' --remove test account ids
         AND (pbt.paymentmethod in ('CRYPTO_DEPOSIT','CRYPTO_PAYMENT','CRYPTO','CRYPTO_PAYOUT') or (pbt.paymentmethod is null and split_part(pbt.remarks, '#', 3) is not null))  --We only want crypto ledger entries and manual entries that are refunds
-        AND pbt.transactionid not in ('bdc4b159-9ee7-4b43-ae55-0fe8ef6676cb','f069db12-f8d3-4219-85d9-b6776dae1465','6fd59dff-85a2-42c8-b10d-23f61f8274a0','acc6b3c1-33db-4b81-a102-b377bf6fd854','ce695fde-ab02-45c7-bfac-c2ab1a330460','16f621dc-ab70-48bf-aa31-cc9e2adbd335','a8dd5f75-702f-459e-8dd8-ea0b7f4b53f9','b9fafd9e-d5ab-456e-873f-570d67d589be','e8f730e0-14c8-48ca-a8dd-49182be632e3')     -- filtering out bugs
-        AND not (upper(pbt.transactiontype) in ('NETWORK_FEE','NETWORK_FEE_COVERAGE','NETWORK_INTERNAL') and pbt.createdat < '2022/09/06')                                      -- new rule for revenue tracking since '2022/09/06'
+        AND pbt.transactionid not in ('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx','xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx','xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx','xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx')     -- filtering out bugs
+        AND not (upper(pbt.transactiontype) in ('NETWORK_FEE','NETWORK_INTERNAL') and pbt.createdat < '2020/01/01')                                      -- new rule for revenue tracking since date
 )
 ,pl_pm_tx as (
     SELECT
