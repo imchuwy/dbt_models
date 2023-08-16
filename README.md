@@ -1,2 +1,3 @@
 # dbt_models
-Example DBT models for a client
+Hello!
+This repository contains example DBT models which were made for a client. This SQL code has been altered to remove any sensitive information.
