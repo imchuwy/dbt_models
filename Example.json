@@ -1,0 +1,49 @@
+{
+    "_id": {
+      "$oid": "xxxxxxxxxxxxxxxxxxxxfbc9"
+    },
+    "id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxd7ae",
+    "merchantId": "xx-xxxx0125",
+    "amount": "100000000",
+    "decimals": 6,
+    "txHash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx4f68",
+    "vendorExternalId": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxd7ae",
+    "addressId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx6c03",
+    "walletId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxa9ca",
+    "accountId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx5c0a",
+    "currency": "USDT",
+    "mainCurrency": "TRX",
+    "isTestnet": false,
+    "isSandbox": false,
+    "direction": "incoming",
+    "provider": "xxxxxxxx",
+    "product": "xx",
+    "state": "pending",
+    "confidence": "none",
+    "details": {
+      "sources": [
+        {
+          "address": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGK45"
+        }
+      ],
+      "destinations": [
+        {
+          "address": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxY4Sd"
+        }
+      ]
+    },
+    "minedTimestamp": {
+      "$date": "2020-01-01T00:00:00Z"
+    },
+    "payment": {
+      "$oid": "xxxxxxxxxxxxxxxxxxxxfa71"
+    },
+    "paymentId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx7a1c",
+    "createdAt": {
+      "$date": "2020-01-01T00:00:00.000Z" 
+    },
+    "updatedAt": {
+      "$date": "2020-01-01T00:00:00.000Z"
+    },
+    "__v": 0
+  }
